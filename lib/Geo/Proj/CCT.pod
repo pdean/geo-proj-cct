@@ -11,13 +11,13 @@ This documentation refers to Proj version 0.01
 =head1 SYNOPSIS
 
     use v5.36;
-    use Proj;
+    use aliased 'Geo::Proj::CCT';
 
-    say Proj->version();
+    say CCT->version();
 
     my $src = "EPSG:4326";
     my $tgt = "+proj=utm +zone=32 +datum=WGS84";
-    my $p = Proj->crs2crs($src,$tgt);
+    my $p = CCT->crs2crs($src,$tgt);
     say $p->definition;
     $p = $p->norm;
     say $p->definition;
@@ -44,13 +44,13 @@ Perl binding to L<proj|http://proj.org> library.
 
 =over
 
-=item B<< Proj->create >> I<projstring>
+=item B<< Geo::Proj::CCT->create >> I<projstring>
 
 Returns a transformation object from a projstring etc.
 
 See L<https://proj.org/development/reference/functions.html#c.proj_create>
 
-=item B<< Proj->crs2crs >> I<sourcestring> I<targetstring>
+=item B<< Geo::Proj::CCT->crs2crs >> I<sourcestring> I<targetstring>
 
 Create a transformation object that is a pipeline between two known coordinate reference systems.
 

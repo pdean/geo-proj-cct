@@ -3,9 +3,9 @@ Makefile.PL
 MANIFEST
 README
 README.md
-t/Proj.t
-lib/Proj.pm
-lib/Proj.pod
+t/Geo-Proj-CCT.t
+lib/Geo/Proj/CCT.pm
+lib/Geo/Proj/CCT.pod
 examples/demo
 examples/testmga
 examples/objdemo

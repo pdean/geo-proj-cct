@@ -1,6 +1,6 @@
 # vim:ft=c:sts=4:sw=4:et
 
-package Proj;
+package Geo::Proj::CCT;
 
 $VERSION = '0.01';
 use base 'Exporter';
@@ -43,7 +43,7 @@ use Inline C => Config => my_conf ;
 
 use Inline C => 'DATA',
     version => '0.01',
-    name => 'Proj';
+    name => 'Geo::Proj::CCT';
 
 1;
 

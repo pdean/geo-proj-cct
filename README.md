@@ -2,7 +2,7 @@
 perl interface to proj.org library conversions and transformations
 
 This is a work in progress but already quite usable.  See examples folder.
-Manpage in lib/Proj.pod
+Manpage in lib/Geo/Proj/CCT.pod
 
 Installation
 

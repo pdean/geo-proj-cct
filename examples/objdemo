@@ -3,12 +3,12 @@
 
 use v5.36;
 
-use Proj;
+use aliased 'Geo::Proj::CCT';
 
 my $src = "EPSG:4326";
 my $tgt = "+proj=utm +zone=32 +datum=WGS84";
 
-my $p = Proj->new($src,$tgt);
+my $p = CCT->new($src,$tgt);
 say $p->definition;
 $p = $p->norm;
 say $p->definition;
