@@ -1,6 +1,7 @@
 # Geo::Proj::CCT
 
-perl interface to proj.org library conversions and transformations
+perl interface to proj.org library. Coordinate conversions and transformations
+only.
 
 ## INSTALLATION
 
