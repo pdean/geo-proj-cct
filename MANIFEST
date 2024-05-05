@@ -1,7 +1,6 @@
 Changes
 Makefile.PL
 MANIFEST
-README
 README.md
 t/Geo-Proj-CCT.t
 lib/Geo/Proj/CCT.pm
