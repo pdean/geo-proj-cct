@@ -1,5 +1,5 @@
-# proj4perl
-perl interface to proj.org library
+# Geo::Proj::CCT
+perl interface to proj.org library conversions and transformations
 
 This is a work in progress but already quite usable.  See examples folder.
 Manpage in lib/Proj.pod
