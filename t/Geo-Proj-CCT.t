@@ -9,7 +9,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 1;
-BEGIN { use_ok('Proj') };
+BEGIN { use_ok('Geo::Proj::CCT') };
 
 #########################
 
