@@ -39,16 +39,14 @@ sub kmlout {
 }
 
 my $href = 'http://maps.google.com/mapfiles/kml/pal4/icon46.png';
-my $styles = [
-    ['house','ff00ff00',$href],
-    ['ground','ff7f00ff',$href]];
+my $styles = [ ['house','ff00ff00',$href], ['ground','ff7f00ff',$href]];
 
 my $p = CCT->crs2crs('epsg:7856', 'epsg:7844')->norm;
 my $points = [];
 my $file = "sample.csv";
 my $kml = "sample.kml";
 open IN, '<', $file;
-
+open OUT, '>', $kml;
 while (<IN>) {
     chomp;
     my ($x,$y,$z,$d) = split /,/;
@@ -58,6 +56,4 @@ while (<IN>) {
     my $desc = sprintf "RL %.1f",$z;
     push @$points,[$d,$lon,$lat,$z,$style,$desc];
 }
-
-open OUT, '>', $kml;
 print OUT kmlout($kml, $styles, $points);
