@@ -1,5 +1,6 @@
 Changes
 Makefile.PL
+LICENSE
 MANIFEST
 README.md
 t/Geo-Proj-CCT.t
@@ -8,5 +9,7 @@ lib/Geo/Proj/CCT.pod
 examples/demo
 examples/testmga
 examples/objdemo
+examples/kmlout
+examples/sample.csv
 META.yml                                 Module YAML meta-data (added by MakeMaker)
 META.json                                Module JSON meta-data (added by MakeMaker)
