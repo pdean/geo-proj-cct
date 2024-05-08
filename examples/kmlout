@@ -42,6 +42,7 @@ my $href = 'http://maps.google.com/mapfiles/kml/pal4/icon46.png';
 my $styles = [ ['house','ff00ff00',$href], ['ground','ff7f00ff',$href]];
 
 my $p = CCT->crs2crs('epsg:7856', 'epsg:7844')->norm;
+say $p->definition;
 my $points = [];
 my $file = "sample.csv";
 my $kml = "sample.kml";
@@ -57,3 +58,4 @@ while (<IN>) {
     push @$points,[$d,$lon,$lat,$z,$style,$desc];
 }
 print OUT kmlout($kml, $styles, $points);
+say "wrote ", scalar @$points," points";
