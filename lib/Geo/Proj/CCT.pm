@@ -115,6 +115,42 @@ SV* inv(SV* p, SV* coord_ref) {
     return(trans(p,-1,coord_ref));
 }
 
+SV* geod(SV* p, SV* a_ref, SV* b_ref) {
+    int n;
+    AV* coord;
+
+    PJ *P = ((PJ*)SvIV(SvRV(p)));
+
+    if ((!SvROK(a_ref)) || (SvTYPE(SvRV(a_ref)) != SVt_PVAV)
+        || ((n = av_len((AV *)SvRV(a_ref))) < 0)) {
+        return &PL_sv_undef;
+    }
+    n = n>3 ? 3 : n;    
+    coord = (AV*) SvRV(a_ref);
+    PJ_COORD a = {{0.0, 0.0, 0.0, 0.0}};
+    for (int i=0; i<=n; i++) {
+        a.v[i] = SvNV(*av_fetch(coord, i, 0)); 
+    }
+
+    if ((!SvROK(b_ref)) || (SvTYPE(SvRV(b_ref)) != SVt_PVAV)
+        || ((n = av_len((AV *)SvRV(b_ref))) < 0)) {
+        return &PL_sv_undef;
+    }
+    n = n>3 ? 3 : n;    
+    coord = (AV*) SvRV(b_ref);
+    PJ_COORD b = {{0.0, 0.0, 0.0, 0.0}};
+    for (int i=0; i<=n; i++) {
+        b.v[i] = SvNV(*av_fetch(coord, i, 0)); 
+    }
+
+    PJ_COORD c = proj_geod(P, a, b);
+    AV* res = newAV();
+    for (int i=0; i<3; i++) {
+        av_push(res, newSVnv(c.v[i]));
+    }
+    return newRV_noinc((SV*) res);
+}
+
 void DESTROY(SV* obj) {
     PJ* P = (PJ*)SvIV(SvRV(obj));
     proj_destroy(P);
