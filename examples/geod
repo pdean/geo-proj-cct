@@ -4,15 +4,13 @@
 use v5.36;
 
 use aliased 'Geo::Proj::CCT';
-use Math::Trig qw(deg2rad);
-use POSIX qw(floor);
 
 my $cs = "+proj=longlat +ellps=GRS80";
 my $p = CCT->create($cs);
 
 # example in gda2020 tech manual page 51
-my $a = [deg2rad(dec(144, 25, 29.5244)), deg2rad(dec(-37, 57,  3.7203))];
-my $b = [deg2rad(dec(143, 55, 35.3839)), deg2rad(dec(-37, 39, 10.1561))];
+my $a = [dec(144, 25, 29.5244), dec(-37, 57,  3.7203)];
+my $b = [dec(143, 55, 35.3839), dec(-37, 39, 10.1561)];
 
 my ($d, $f, $r) = @{$p->geod($a, $b)};
 
@@ -21,6 +19,8 @@ say sprintf("%4d° %02d' %05.2f\"", dms(mod($f, 360)));
 say sprintf("%4d° %02d' %05.2f\"", dms(mod($r+180, 360)));
 
 # subs
+
+use POSIX qw(floor);
 
 sub mod {
     my ($x, $y) = @_;

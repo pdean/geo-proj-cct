@@ -51,6 +51,7 @@ __DATA__
 __C__
 
 #include <proj.h>
+#include <math.h>
 
 const char* version(const char *class) {
     PJ_INFO info = proj_info();
@@ -129,7 +130,7 @@ SV* geod(SV* p, SV* a_ref, SV* b_ref) {
     coord = (AV*) SvRV(a_ref);
     PJ_COORD a = {{0.0, 0.0, 0.0, 0.0}};
     for (int i=0; i<=n; i++) {
-        a.v[i] = SvNV(*av_fetch(coord, i, 0)); 
+        a.v[i] = SvNV(*av_fetch(coord, i, 0)) * M_PI / 180;
     }
 
     if ((!SvROK(b_ref)) || (SvTYPE(SvRV(b_ref)) != SVt_PVAV)
@@ -140,7 +141,7 @@ SV* geod(SV* p, SV* a_ref, SV* b_ref) {
     coord = (AV*) SvRV(b_ref);
     PJ_COORD b = {{0.0, 0.0, 0.0, 0.0}};
     for (int i=0; i<=n; i++) {
-        b.v[i] = SvNV(*av_fetch(coord, i, 0)); 
+        b.v[i] = SvNV(*av_fetch(coord, i, 0)) * M_PI / 180;
     }
 
     PJ_COORD c = proj_geod(P, a, b);
