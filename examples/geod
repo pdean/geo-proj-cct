@@ -17,8 +17,8 @@ my $b = [deg2rad(dec(143, 55, 35.3839)), deg2rad(dec(-37, 39, 10.1561))];
 my ($d, $f, $r) = @{$p->geod($a, $b)};
 
 say sprintf("%.3f", $d);
-say sprintf("%3d° %02d' %05.2f\"", dms(mod($f, 360)));
-say sprintf("%3d° %02d' %05.2f\"", dms(mod($r+180, 360)));
+say sprintf("%4d° %02d' %05.2f\"", dms(mod($f, 360)));
+say sprintf("%4d° %02d' %05.2f\"", dms(mod($r+180, 360)));
 
 # subs
 
