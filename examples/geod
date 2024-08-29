@@ -10,6 +10,7 @@ use POSIX qw(floor);
 my $cs = "+proj=longlat +ellps=GRS80";
 my $p = CCT->create($cs);
 
+# example in gda2020 tech manual page 51
 my $a = [deg2rad(dec(144, 25, 29.5244)), deg2rad(dec(-37, 57,  3.7203))];
 my $b = [deg2rad(dec(143, 55, 35.3839)), deg2rad(dec(-37, 39, 10.1561))];
 
