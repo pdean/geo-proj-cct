@@ -14,7 +14,7 @@ my $b = [dec(143, 55, 35.3839), dec(-37, 39, 10.1561)];
 
 my ($d, $f, $r) = @{$p->geod($a, $b)};
 
-say sprintf("%.3f", $d);
+say sprintf("%14.3f m", $d);
 say sprintf("%4d° %02d' %05.2f\"", dms(mod($f, 360)));
 say sprintf("%4d° %02d' %05.2f\"", dms(mod($r+180, 360)));
 
