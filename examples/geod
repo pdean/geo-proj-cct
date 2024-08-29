@@ -28,19 +28,21 @@ sub mod {
 }
 
 sub dec {
-    my ($d, $m, $s) = @_;
-    if ($d < 0) {
-        $m = -abs($m);
-        $s = -abs($s);
+    my ($deg, $min, $sec) = @_;
+    if ($deg < 0) {
+        $min = -abs($min);
+        $sec = -abs($sec);
     }
-    return $d + ($m + $s/60)/60;
+    return $deg + ($min + $sec/60)/60;
 }
 
 sub dms {
-    my ($d) = @_;
-    my $sgn = $d < 0 ? -1 : 1;
-    $d = abs($d);
-    my $m = ($d - floor($d)) * 60;
-    my $s = ($m - floor($m)) * 60;
-    return (floor($d) * $sgn, floor($m), $s);
+    my ($dec) = @_;
+    my $sign = $dec < 0 ? -1 : 1;
+    $dec = abs($dec);
+    my $deg = floor($dec);
+    my $ms  = ($dec - $deg) * 60;
+    my $min = floor($ms);
+    my $sec = ($ms - $min) * 60;
+    return ($deg * $sign, $min, $sec);
 }
