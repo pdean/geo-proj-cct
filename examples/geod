@@ -4,27 +4,42 @@
 use v5.36;
 
 use aliased 'Geo::Proj::CCT';
-use Math::Trig qw(deg2rad rad2deg);
+use Math::Trig qw(deg2rad);
 use POSIX qw(floor);
 
 my $cs = "+proj=longlat +ellps=GRS80";
-#my $cs = "epsg:7844";
 my $p = CCT->create($cs);
 
-my $a = [deg2rad(144+(25+29.5244/60)/60), -deg2rad(37+(57+3.7203/60)/60)];
-my $b = [deg2rad(143+(55+35.3839/60)/60), -deg2rad(37+(39+10.1561/60)/60)];
-
-say "@$a";
-say "@$b";
+my $a = [deg2rad(dec(144, 25, 29.5244)), deg2rad(dec(-37, 57,  3.7203))];
+my $b = [deg2rad(dec(143, 55, 35.3839)), deg2rad(dec(-37, 39, 10.1561))];
 
 my ($d, $f, $r) = @{$p->geod($a, $b)};
 
-say $d;
-say fmod($f, 360);
-say fmod($r+180, 360);
+say sprintf("%.3f", $d);
+say sprintf("%3d° %02d' %05.2f\"", dms(mod($f, 360)));
+say sprintf("%3d° %02d' %05.2f\"", dms(mod($r+180, 360)));
 
-sub fmod {
+# subs
+
+sub mod {
     my ($x, $y) = @_;
-    my $n = floor($x/$y);
-    return $x - $n*$y;
+    return $x - floor($x/$y) * $y;
+}
+
+sub dec {
+    my ($d, $m, $s) = @_;
+    if ($d < 0) {
+        $m = -abs($m);
+        $s = -abs($s);
+    }
+    return $d + ($m + $s/60)/60;
+}
+
+sub dms {
+    my ($d) = @_;
+    my $sgn = $d < 0 ? -1 : 1;
+    $d = abs($d);
+    my $m = ($d - floor($d)) * 60;
+    my $s = ($m - floor($m)) * 60;
+    return (floor($d) * $sgn, floor($m), $s);
 }
