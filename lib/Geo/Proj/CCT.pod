@@ -104,7 +104,7 @@ See L<https://proj.org/development/reference/functions.html#c.proj_geod>
 
 =over
 
-=item B<< Proj->version >>
+=item B<< Geo::Proj::CCT->version >>
 
 Returns the version of the current instance of proj.  This is the version field from the PJ_INFO structure returned from the proj_info function.
 
