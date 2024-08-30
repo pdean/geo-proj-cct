@@ -9,16 +9,16 @@ my $cs = "+proj=longlat +ellps=GRS80";
 my $p = CCT->create($cs);
 
 # example in gda2020 tech manual page 51
-my $a = [dec(144, 25, 29.5244), dec(-37, 57,  3.7203)];
-my $b = [dec(143, 55, 35.3839), dec(-37, 39, 10.1561)];
+my $aref = [dec(144, 25, 29.5244), dec(-37, 57,  3.7203)];
+my $bref = [dec(143, 55, 35.3839), dec(-37, 39, 10.1561)];
 
-my ($d, $f, $r) = @{$p->geod($a, $b)};
+my ($dist, $fwd, $rev) = @{$p->geod($aref, $bref)};
 
-say sprintf("%14.3f m", $d);
-say sprintf("%4d° %02d' %05.2f\"", dms($f));
-say sprintf("%4d° %02d' %05.2f\"", dms($r));
-say sprintf("%4d° %02d' %05.2f\"", dms(mod($f, 360)));
-say sprintf("%4d° %02d' %05.2f\"", dms(mod($r+180, 360)));
+say sprintf("%14.3f m", $dist);
+say sprintf("%4d° %02d' %05.2f\"", dms($fwd));
+say sprintf("%4d° %02d' %05.2f\"", dms($rev));
+say sprintf("%4d° %02d' %05.2f\"", dms(mod($fwd, 360)));
+say sprintf("%4d° %02d' %05.2f\"", dms(mod($rev+180, 360)));
 
 # subs
 
