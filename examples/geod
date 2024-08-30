@@ -7,6 +7,7 @@ use aliased 'Geo::Proj::CCT';
 
 my $cs = "+proj=longlat +ellps=GRS80";
 my $p = CCT->create($cs);
+say $p->definition();
 
 # example in gda2020 tech manual page 51
 my $aref = [dec(144, 25, 29.5244), dec(-37, 57,  3.7203)];
