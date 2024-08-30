@@ -22,7 +22,7 @@ say sprintf("%4d° %02d' %05.2f\"", dms(mod($rev+180, 360)));
 
 # subs
 
-use POSIX qw(floor);
+use POSIX qw(floor copysign);
 
 sub mod {
     my ($x, $y) = @_;
@@ -31,20 +31,17 @@ sub mod {
 
 sub dec {
     my ($deg, $min, $sec) = @_;
-    if ($deg < 0) {
-        $min = -abs($min);
-        $sec = -abs($sec);
-    }
+    $min = copysign($min, $deg);
+    $sec = copysign($sec, $deg);
     return $deg + ($min + $sec/60)/60;
 }
 
 sub dms {
     my ($dec) = @_;
-    my $sign = $dec < 0 ? -1 : 1;
-    $dec = abs($dec);
-    my $deg = floor($dec);
-    my $ms  = ($dec - $deg) * 60;
-    my $min = floor($ms);
-    my $sec = ($ms - $min) * 60;
-    return ($deg * $sign, $min, $sec);
+    my $d   = abs($dec);
+    my $deg = floor($d);
+    my $m   = ($d - $deg) * 60;
+    my $min = floor($m);
+    my $sec = ($m - $min) * 60;
+    return (copysign($deg, $dec), $min, $sec);
 }
