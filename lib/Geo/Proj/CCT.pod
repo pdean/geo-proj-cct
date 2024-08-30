@@ -86,6 +86,20 @@ Equivalent to $pj->trans -1 coordref
 
 =back
 
+=head2 Distance
+
+=over
+
+=item B<< $pj->geod >> I<coord_ref> I<coord_ref>
+
+Calculate distance between two points.  Points are references to arrays of
+longitude and latitude in degrees.  Returns reference to array consisting of
+distance, forward azimuth and reverse azimuth.
+
+See L<https://proj.org/development/reference/functions.html#c.proj_geod>
+
+=back
+
 =head2 Info Functions
 
 =over
