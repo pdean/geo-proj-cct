@@ -112,7 +112,7 @@ See L<https://proj.org/development/reference/functions.html#c.proj_info>
 
 =item B<< $pj->definition >> 
 
-Returns the proj-string that was used to create the PJ object with.  The definition field from the PJ_PROJ_INFO structure.
+Returns the proj-string that was used to create the PJ object.  The definition field from the PJ_PROJ_INFO structure.
 
 See L<https://proj.org/development/reference/functions.html#c.proj_pj_info> 
 
