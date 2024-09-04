@@ -51,7 +51,8 @@ __DATA__
 __C__
 
 #include <proj.h>
-#include <math.h>
+//#include <math.h>
+# define M_PI 3.14159265358979323846
 
 const char* version(const char *class) {
     PJ_INFO info = proj_info();
