@@ -21,6 +21,9 @@ say sprintf("%4d° %02d' %05.2f\"", dms($rev));
 say sprintf("%4d° %02d' %05.2f\"", dms(mod($fwd, 360)));
 say sprintf("%4d° %02d' %05.2f\"", dms(mod($rev+180, 360)));
 
+say "chcp 65001";
+say "if degree not shown on windows";
+
 # subs
 
 use POSIX qw(floor copysign);
