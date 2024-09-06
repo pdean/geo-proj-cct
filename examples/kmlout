@@ -8,63 +8,66 @@ use v5.36;
 use XML::Simple;
 use aliased 'Geo::Proj::CCT';
 
-my $p = CCT->crs2crs('epsg:7856', 'epsg:7844')->norm;
+my $p = CCT->crs2crs( 'epsg:7856', 'epsg:7844' )->norm;
 say $p->definition;
 
 my $points = [];
 open my $fd, '<', $file;
 while (<$fd>) {
     chomp;
-    my ($x,$y,$z,$d) = split /,/;
+    my ( $x, $y, $z, $d ) = split /,/;
     my $style = 'house';
     $style = 'ground' if $d =~ /G/;
-    my ($lon,$lat) = @{$p->fwd([$x,$y])};
-    my $desc = sprintf "RL %.1f",$z;
-    push @$points,[$d,$lon,$lat,$z,$style,$desc];
+    my ( $lon, $lat ) = @{ $p->fwd( [ $x, $y ] ) };
+    my $desc = sprintf "RL %.1f", $z;
+    push @$points, [ $d, $lon, $lat, $z, $style, $desc ];
 }
 close $fd;
 
 my $href = 'http://maps.google.com/mapfiles/kml/pal4/icon46.png';
-my $styles = [ ['house','ff00ff00',$href], ['ground','ff7f00ff',$href]];
+my $styles =
+    [ [ 'house', 'ff00ff00', $href ], [ 'ground', 'ff7f00ff', $href ] ];
 open $fd, '>', $kml;
-print $fd kmlout($kml, $styles, $points);
+print $fd kmlout( $kml, $styles, $points );
 close $fd;
 
-say "wrote ", scalar @$points," points";
+say "wrote ", scalar @$points, " points";
 
 # end
 #
 # subs
 
 sub kmlout {
-    my ($name, $styles, $points) = @_;
-    my ($Doc, $Style, $Placemark) = ([],[],[]);
-    push @$Doc, {
-        name => [$name],
-        Style => $Style,
+    my ( $name, $styles, $points )    = @_;
+    my ( $Doc,  $Style,  $Placemark ) = ( [], [], [] );
+    push @$Doc,
+        {
+        name      => [$name],
+        Style     => $Style,
         Placemark => $Placemark,
-    };
+        };
     for my $style (@$styles) {
-        my ($id,$color,$href) = @$style;
-        push @$Style, {
-            id => $id,
+        my ( $id, $color, $href ) = @$style;
+        push @$Style,
+            {
+            id        => $id,
             IconStyle => [
-                {
-                    Icon => [{ href => [$href]}],
+                {   Icon  => [ { href => [$href] } ],
                     color => [$color]
                 }
             ]
-        }
+            };
     }
     for my $point (@$points) {
-        my ($name, $lon, $lat, $z, $style, $desc) = @$point;
-        push @$Placemark, {
-            name => [$name],
+        my ( $name, $lon, $lat, $z, $style, $desc ) = @$point;
+        push @$Placemark,
+            {
+            name        => [$name],
             description => [$desc],
-            styleUrl => ["#$style"],
-            Point => [{coordinates => ["$lon,$lat,$z"]}],
-        };
+            styleUrl    => ["#$style"],
+            Point       => [ { coordinates => ["$lon,$lat,$z"] } ],
+            };
     }
-    my $root = {Document => $Doc};
-    return XMLout($root, RootName => 'kml');
+    my $root = { Document => $Doc };
+    return XMLout( $root, RootName => 'kml' );
 }
