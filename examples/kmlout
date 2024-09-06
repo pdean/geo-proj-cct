@@ -26,8 +26,8 @@ while (<$fd>) {
 close $fd;
 
 my $href = 'http://maps.google.com/mapfiles/kml/pal4/icon46.png';
-my $styles =
-    [ [ 'house', 'ff00ff00', $href ], [ 'ground', 'ff7f00ff', $href ] ];
+my $styles
+    = [ [ 'house', 'ff00ff00', $href ], [ 'ground', 'ff7f00ff', $href ] ];
 open $fd, '>', $kml;
 print $fd kmlout( $kml, $styles, $points );
 close $fd;
@@ -42,31 +42,28 @@ sub kmlout {
     my ( $name, $styles, $points )    = @_;
     my ( $Doc,  $Style,  $Placemark ) = ( [], [], [] );
     push @$Doc,
-        {
-        name      => [$name],
-        Style     => $Style,
-        Placemark => $Placemark,
+        {   name      => [$name],
+            Style     => $Style,
+            Placemark => $Placemark,
         };
     for my $style (@$styles) {
         my ( $id, $color, $href ) = @$style;
         push @$Style,
-            {
-            id        => $id,
-            IconStyle => [
-                {   Icon  => [ { href => [$href] } ],
-                    color => [$color]
-                }
-            ]
+            {   id        => $id,
+                IconStyle => [
+                    {   Icon  => [ { href => [$href] } ],
+                        color => [$color]
+                    }
+                ]
             };
     }
     for my $point (@$points) {
         my ( $name, $lon, $lat, $z, $style, $desc ) = @$point;
         push @$Placemark,
-            {
-            name        => [$name],
-            description => [$desc],
-            styleUrl    => ["#$style"],
-            Point       => [ { coordinates => ["$lon,$lat,$z"] } ],
+            {   name        => [$name],
+                description => [$desc],
+                styleUrl    => ["#$style"],
+                Point       => [ { coordinates => ["$lon,$lat,$z"] } ],
             };
     }
     my $root = { Document => $Doc };
