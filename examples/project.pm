@@ -4,22 +4,13 @@ use v5.36;
 
 package Point;
 use Moo;
-
-has id    => ( is => 'ro', required => 1 );
-has x     => ( is => 'ro', required => 1 );
-has y     => ( is => 'ro', required => 1 );
-has z     => ( is => 'ro', required => 1 );
-has desc  => ( is => 'ro', default  => '' );
-has style => ( is => 'ro', default  => '' );
+has [qw(id x y z desc style)] => ( is => 'ro', required => 1 );
 
 # -------------------------------------------
 
 package Style;
 use Moo;
-
-has id    => ( is => 'ro', required => 1 );
-has color => ( is => 'ro', required => 1 );
-has href  => ( is => 'ro', required => 1 );
+has [qw(id color href)] => ( is => 'ro', required => 1 );
 
 # -------------------------------------------
 
@@ -27,9 +18,8 @@ package Project;
 use Moo;
 use XML::Simple;
 
-has name   => ( is => 'ro', required => 1 );
-has points => ( is => 'ro', default  => sub { return [] } );
-has styles => ( is => 'ro', default  => sub { return [] } );
+has name                => ( is => 'ro', required => 1 );
+has [qw(points styles)] => ( is => 'ro', default  => sub { return [] } );
 
 sub point_add {
     my ( $self, $point ) = @_;
