@@ -36,6 +36,9 @@ $project->style_add(
 $project->style_add(
     Style->new( id => 'ground', color => 'ff7f00ff', href => $href ) );
 
-open $fd, '>', $kml;
-print $fd $project->kmlout;
-close $fd;
+#open $fd, '>', $kml;
+#print $fd $project->kmlout;
+#close $fd;
+
+#say $project->kmlout;
+say $project->tokml;
