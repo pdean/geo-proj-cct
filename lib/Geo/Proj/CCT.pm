@@ -45,6 +45,8 @@ use Inline C => 'DATA',
     version => '0.01',
     name => 'Geo::Proj::CCT';
 
+Inline->init();
+
 1;
 
 __DATA__
