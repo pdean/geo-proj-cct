@@ -17,7 +17,6 @@ has [qw(id color href)] => ( is => 'ro', required => 1 );
 
 package Project;
 use Moo;
-use XML::Simple;
 use XML::LibXML;
 
 has name                => ( is => 'ro', required => 1 );
@@ -35,40 +34,6 @@ sub style_add {
     return $self;
 }
 
-sub kmlout {
-    my ($self) = @_;
-    my ( $Doc, $Style, $Placemark ) = ( [], [], [] );
-    push @$Doc,
-        {   name      => [ $self->name ],
-            Style     => $Style,
-            Placemark => $Placemark,
-        };
-    for my $style ( @{ $self->styles } ) {
-        push @$Style,
-            {   id        => $style->id,
-                IconStyle => [
-                    {   Icon  => [ { href => [ $style->href ] } ],
-                        color => [ $style->color ]
-                    }
-                ]
-            };
-    }
-    for my $point ( @{ $self->points } ) {
-        push @$Placemark,
-            {   name        => [ $point->id ],
-                description => [ $point->desc ],
-                styleUrl    => [ "#" . $point->style ],
-                Point       => [
-                    {   coordinates =>
-                        [ $point->x . ',' . $point->y . ',' . $point->z ]
-                    }
-                ],
-            };
-    }
-    my $root = { Document => $Doc };
-    return XMLout( $root, RootName => 'kml' );
-}
-
 use subs qw/element attribute text/;
 
 sub tokml {
@@ -82,47 +47,21 @@ sub tokml {
     text $dom, $document, name => $self->name;
 
     for my $pt ( @{ $self->points } ) {
-        my $placemark = $dom->createElement('Placemark');
-        $document->appendChild($placemark);
-
-        my $name = $dom->createElement('name');
-        $name->appendTextNode( $pt->id );
-        $placemark->appendChild($name);
-
-        my $point = $dom->createElement('Point');
-        $placemark->appendChild($point);
-
-        my $coordinates = $dom->createElement('coordinates');
-        $coordinates->appendTextNode( $pt->x . ',' . $pt->y . ',' . $pt->z );
-        $point->appendChild($coordinates);
-
-        my $description = $dom->createElement('description');
-        $description->appendTextNode( $pt->desc );
-        $placemark->appendChild($description);
-
-        my $style_url = $dom->createElement('styleUrl');
-        $style_url->appendTextNode( '#' . $pt->style );
-        $placemark->appendChild($style_url);
+        my $placemark = element $dom, $document => 'Placemark';
+        text $dom, $placemark, name => $pt->id;
+        my $point = element $dom, $placemark => 'Point';
+        text $dom, $point,
+            coordinates => $pt->x . ',' . $pt->y . ',' . $pt->z;
+        text $dom, $placemark, description => $pt->desc;
+        text $dom, $placemark, styleUrl    => '#' . $pt->style;
     }
 
     for my $st ( @{ $self->styles } ) {
-        my $style = $dom->createElement('Style');
-        $document->appendChild($style);
-        $style->setAttribute( id => $st->id );
-
-        my $iconstyle = $dom->createElement('IconStyle');
-        $style->appendChild($iconstyle);
-
-        my $icon = $dom->createElement('Icon');
-        $iconstyle->appendChild($icon);
-
-        my $href = $dom->createElement('href');
-        $href->appendTextNode( $st->href );
-        $icon->appendChild($href);
-
-        my $color = $dom->createElement('color');
-        $color->appendTextNode( $st->color );
-        $iconstyle->appendChild($color);
+        my $style     = attribute $dom, $document, Style => ( id => $st->id );
+        my $iconstyle = element $dom,   $style     => 'IconStyle';
+        my $icon      = element $dom,   $iconstyle => 'Icon';
+        text $dom, $icon,      href  => $st->href;
+        text $dom, $iconstyle, color => $st->color;
     }
 
     return $dom->toString(1);
