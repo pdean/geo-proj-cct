@@ -69,18 +69,17 @@ sub kmlout {
     return XMLout( $root, RootName => 'kml' );
 }
 
+use subs qw/element attribute text/;
+
 sub tokml {
     my ($self) = @_;
     my $dom    = XML::LibXML::Document->new( '1.0', 'UTF-8' );
     my $kml    = $dom->createElement('kml');
     $kml->setAttribute( 'xmlns', 'http://earth.google.com/kml/2.1' );
     $dom->setDocumentElement($kml);
-    my $document = $dom->createElement('Document');
-    $kml->appendChild($document);
 
-    my $name = $dom->createElement('name');
-    $name->appendTextNode( $self->name );
-    $document->appendChild($name);
+    my $document = element $dom, $kml => 'Document';
+    text $dom, $document, name => $self->name;
 
     for my $pt ( @{ $self->points } ) {
         my $placemark = $dom->createElement('Placemark');
@@ -127,6 +126,29 @@ sub tokml {
     }
 
     return $dom->toString(1);
+}
+
+sub text {
+    my ( $dom, $parent, $name, $text ) = @_;
+    my $node = $dom->createElement($name);
+    $node->appendTextNode($text);
+    $parent->appendChild($node);
+    return $node;
+}
+
+sub element {
+    my ( $dom, $parent, $name ) = @_;
+    my $node = $dom->createElement($name);
+    $parent->appendChild($node);
+    return $node;
+}
+
+sub attribute {
+    my ( $dom, $parent, $name, $id, $value ) = @_;
+    my $node = $dom->createElement($name);
+    $parent->appendChild($node);
+    $node->setAttribute( $id => $value );
+    return $node;
 }
 
 1;
