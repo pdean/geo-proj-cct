@@ -40,8 +40,8 @@ sub tokml {
     my ($self) = @_;
     my $dom    = XML::LibXML::Document->new( '1.0', 'UTF-8' );
     my $kml    = $dom->createElement('kml');
-    $kml->setAttribute( xmlns => 'http://earth.google.com/kml/2.1' );
     $dom->setDocumentElement($kml);
+    $kml->setAttribute( xmlns => 'http://earth.google.com/kml/2.1' );
 
     my $document = element $kml => 'Document';
     text $document, name => $self->name;
