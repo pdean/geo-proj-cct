@@ -68,25 +68,22 @@ sub tokml {
 
 sub element {
     my ( $parent, $name ) = @_;
-    my $dom  = $parent->ownerDocument;
-    my $node = $dom->createElement($name);
+    my $node = $parent->ownerDocument->createElement($name);
     $parent->appendChild($node);
     return $node;
 }
 
 sub text {
     my ( $parent, $name, $text ) = @_;
-    my $dom  = $parent->ownerDocument;
-    my $node = $dom->createElement($name);
-    $node->appendTextNode($text);
+    my $node = $parent->ownerDocument->createElement($name);
     $parent->appendChild($node);
+    $node->appendTextNode($text);
     return $node;
 }
 
 sub attribute {
     my ( $parent, $name, $id, $value ) = @_;
-    my $dom  = $parent->ownerDocument;
-    my $node = $dom->createElement($name);
+    my $node = $parent->ownerDocument->createElement($name);
     $parent->appendChild($node);
     $node->setAttribute( $id => $value );
     return $node;
