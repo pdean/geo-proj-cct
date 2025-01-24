@@ -43,47 +43,49 @@ sub tokml {
     $kml->setAttribute( xmlns => 'http://earth.google.com/kml/2.1' );
     $dom->setDocumentElement($kml);
 
-    my $document = element $dom, $kml => 'Document';
-    text $dom, $document, name => $self->name;
+    my $document = element $kml => 'Document';
+    text $document, name => $self->name;
 
     for my $pt ( @{ $self->points } ) {
-        my $placemark = element $dom, $document => 'Placemark';
-        text $dom, $placemark, name => $pt->id;
-        my $point = element $dom, $placemark => 'Point';
-        text $dom, $point,
-            coordinates => $pt->x . ',' . $pt->y . ',' . $pt->z;
-        text $dom, $placemark, description => $pt->desc;
-        text $dom, $placemark, styleUrl    => '#' . $pt->style;
+        my $placemark = element $document => 'Placemark';
+        text $placemark, name => $pt->id;
+        my $point = element $placemark => 'Point';
+        text $point,     coordinates => $pt->x . ',' . $pt->y . ',' . $pt->z;
+        text $placemark, description => $pt->desc;
+        text $placemark, styleUrl    => '#' . $pt->style;
     }
 
     for my $st ( @{ $self->styles } ) {
-        my $style     = attribute $dom, $document, Style => ( id => $st->id );
-        my $iconstyle = element $dom,   $style     => 'IconStyle';
-        my $icon      = element $dom,   $iconstyle => 'Icon';
-        text $dom, $icon,      href  => $st->href;
-        text $dom, $iconstyle, color => $st->color;
+        my $style     = attribute $document, Style => ( id => $st->id );
+        my $iconstyle = element $style     => 'IconStyle';
+        my $icon      = element $iconstyle => 'Icon';
+        text $icon,      href  => $st->href;
+        text $iconstyle, color => $st->color;
     }
 
     return $dom->toString(1);
 }
 
+sub element {
+    my ( $parent, $name ) = @_;
+    my $dom  = $parent->ownerDocument;
+    my $node = $dom->createElement($name);
+    $parent->appendChild($node);
+    return $node;
+}
+
 sub text {
-    my ( $dom, $parent, $name, $text ) = @_;
+    my ( $parent, $name, $text ) = @_;
+    my $dom  = $parent->ownerDocument;
     my $node = $dom->createElement($name);
     $node->appendTextNode($text);
     $parent->appendChild($node);
     return $node;
 }
 
-sub element {
-    my ( $dom, $parent, $name ) = @_;
-    my $node = $dom->createElement($name);
-    $parent->appendChild($node);
-    return $node;
-}
-
 sub attribute {
-    my ( $dom, $parent, $name, $id, $value ) = @_;
+    my ( $parent, $name, $id, $value ) = @_;
+    my $dom  = $parent->ownerDocument;
     my $node = $dom->createElement($name);
     $parent->appendChild($node);
     $node->setAttribute( $id => $value );
